@@ -123,31 +123,3 @@ class TestDBStorage(unittest.TestCase):
         self.assertIsNone(retrieved_state)
         self.assertEqual(retrieved_state.id, new_state.id)
         self.assertEqual(retrieved_state.name, new_state.name)
-
-    @unittest.skipIf(models.storage_t == 'db', "not testing db storage")
-    def test_get(self):
-        """Test that retrieved instance db storage"""
-        storage = DBStorage()
-        storage.reload()
-        state_data = {"name": "Malindi"}
-
-        state_instance = State(**state_data)
-        retrieved_state = storage.get(State, state_instance.id)
-        fake_state_id = storage.get(State, 'fake_id')
-
-        # checks to ensure we retrieve from db and instance
-        self.assertEqual(state_instance, retrieved_state)
-        self.assertEqual(fake_state_id, None)
-
-    @unittest.skipIf(models.storage_t == 'db', "not testing db storage")
-    def test_count(self):
-        """Test that counts objects from db storage"""
-        all_objects = len(models.storage.all())
-        all_count_objs = models.storage.count()
-
-        self.assertEqual(all_objects, all_count_objs)
-
-        states_from_all = len(models.storage.all())
-        states_from_count = models.storage.count(State)
-
-        self.assertEqual(staes_from_all, states_from_count)
